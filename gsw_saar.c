@@ -49,7 +49,17 @@ gsw_saar(double p, double lon, double lat)
 
 	return_value	 = GSW_INVALID_VALUE;
 
-	if (lat  <  -86e0  ||  lat  >  90e0)
+	/* 
+	 * lat and lon are converted to ints and used as indices
+	 * into an array.  They need to be sufficiently small to
+	 * not cause undefined behavior
+	 *
+	 * see http://teos-10.org/pubs/gsw/html/gsw_SAAR.html
+	 */
+	if (isnan(lat) || lat  <  -86e0  ||  lat  >  90e0)
+	    return (return_value);
+
+	if (isnan(lon) || lon > 360.0 || lon < -180.0)
 	    return (return_value);
 
 	if (lon  <  0.0)
